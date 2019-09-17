@@ -70,16 +70,12 @@ window.renderStatistics = function (ctx, players, times) {
   for (var i = 0; i < players.length; i++) {
     var xCommonCoordinate = CLOUD_X + GAP_BETWEEN_COLONS + (GAP_BETWEEN_COLONS + BAR_WIDTH) * i;
     var personalHeight = (BAR_HEIGHT * times[i]) / maxTime;
-    var myColor = generateColor();
+    var myColor = (players[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : generateColor();
 
     renderText(ctx,
         players[i],
         xCommonCoordinate,
         CLOUD_HEIGHT - GAP);
-
-    if (players[i] === 'Вы') {
-      myColor = 'rgba(255, 0, 0, 1)';
-    }
 
     renderRect(ctx,
         xCommonCoordinate,
@@ -87,8 +83,6 @@ window.renderStatistics = function (ctx, players, times) {
         BAR_WIDTH,
         personalHeight,
         myColor);
-
-    myColor = generateColor();
 
     renderText(ctx,
         Math.round(times[i]),
