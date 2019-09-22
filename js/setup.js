@@ -22,28 +22,24 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
     .content
     .querySelector('.setup-similar-item');
 
-var wizards = [
-  {
-    name: makeFullName(getRandomArrayElement(WIZARD_NAMES), getRandomArrayElement(WIZARD_SURNAMES)),
-    coatColor: getRandomArrayElement(COAT_COLORS),
-    eyesColor: getRandomArrayElement(EYES_COLOR)
-  },
-  {
-    name: makeFullName(getRandomArrayElement(WIZARD_NAMES), getRandomArrayElement(WIZARD_SURNAMES)),
-    coatColor: getRandomArrayElement(COAT_COLORS),
-    eyesColor: getRandomArrayElement(EYES_COLOR)
-  },
-  {
-    name: makeFullName(getRandomArrayElement(WIZARD_NAMES), getRandomArrayElement(WIZARD_SURNAMES)),
-    coatColor: getRandomArrayElement(COAT_COLORS),
-    eyesColor: getRandomArrayElement(EYES_COLOR)
-  },
-  {
-    name: makeFullName(getRandomArrayElement(WIZARD_NAMES), getRandomArrayElement(WIZARD_SURNAMES)),
-    coatColor: getRandomArrayElement(COAT_COLORS),
-    eyesColor: getRandomArrayElement(EYES_COLOR)
+var makeMocks = function () {
+  var MOCKS_LENGTH = 4;
+  var mocksArray = [];
+
+  for (var i = 0; i < MOCKS_LENGTH; i++) {
+    var mockObj = {
+      name: makeFullName(getRandomArrayElement(WIZARD_NAMES), getRandomArrayElement(WIZARD_SURNAMES)),
+      coatColor: getRandomArrayElement(COAT_COLORS),
+      eyesColor: getRandomArrayElement(EYES_COLOR)
+    };
+
+    mocksArray.push(mockObj);
   }
-];
+
+  return mocksArray;
+};
+
+var wizards = makeMocks();
 
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
