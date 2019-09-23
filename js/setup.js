@@ -51,14 +51,14 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var addFragmentToLayout = function (mocks, addedBlock) {
+var addFragmentToLayout = function (mocks, addedBlock, renderFun) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < mocks.length; i++) {
-    fragment.appendChild(renderWizard(mocks[i]));
+    fragment.appendChild(renderFun(mocks[i]));
   }
   addedBlock.appendChild(fragment);
 };
 
-addFragmentToLayout(wizards, similarListElement);
+addFragmentToLayout(wizards, similarListElement, renderWizard);
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
