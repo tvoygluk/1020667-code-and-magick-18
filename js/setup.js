@@ -128,36 +128,41 @@ var codeRgbToHex = function (rgb) {
       ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2) : '';
 };
 
+var makeRandomWizardLook = function (wizardPart, catalogue, fireballTrigger) {
+  var randomElement = getRandomArrayElement(catalogue);
+  if (fireballTrigger) {
+    wizardPart.style.background = randomElement;
+  }
+  wizardPart.style.fill = randomElement;
+};
+
+var addWizardLookToInput = function (wizardPart, inputElement, fireballTrigger) {
+  inputElement[0].value = fireballTrigger ? codeRgbToHex(wizardPart.style.background) : wizardPart.style.fill;
+};
+
+var setupMyCharacter = function (wizardPart, catalogue, inputElement, fireballTrigger) {
+  makeRandomWizardLook(wizardPart, catalogue, fireballTrigger);
+  addWizardLookToInput(wizardPart, inputElement, fireballTrigger);
+};
+
 var setupPlayer = document.querySelector('.setup-player');
-
 var fireball = setupPlayer.querySelector('.setup-fireball-wrap');
-var fireballInput = document.getElementsByName('fireball-color');
-var makeRandomFireballColor = function () {
-  fireball.style.background = getRandomArrayElement(FIREBALL_COLOR);
-};
-fireball.addEventListener('click', function () {
-  makeRandomFireballColor();
-  fireballInput[0].value = codeRgbToHex(fireball.style.background);
-});
-
 var coat = setupPlayer.querySelector('.wizard-coat');
+var eyes = setupPlayer.querySelector('.wizard-eyes');
+var fireballInput = document.getElementsByName('fireball-color');
 var coatInput = document.getElementsByName('coat-color');
-var makeRandomCoatColor = function () {
-  coat.style = 'fill: ' + getRandomArrayElement(COAT_COLORS);
-};
-coat.addEventListener('click', function () {
-  makeRandomCoatColor();
-  coatInput[0].value = coat.style.fill;
+var eyesInput = document.getElementsByName('eyes-color');
+
+fireball.addEventListener('click', function () {
+  setupMyCharacter(fireball, FIREBALL_COLOR, fireballInput, true);
 });
 
-var eyes = setupPlayer.querySelector('.wizard-eyes');
-var eyesInput = document.getElementsByName('eyes-color');
-var makeRandomEyesColor = function () {
-  eyes.style = 'fill: ' + getRandomArrayElement(EYES_COLOR);
-};
+coat.addEventListener('click', function () {
+  setupMyCharacter(coat, COAT_COLORS, coatInput);
+});
+
 eyes.addEventListener('click', function () {
-  makeRandomEyesColor();
-  eyesInput[0].value = eyes.style.fill;
+  setupMyCharacter(eyes, EYES_COLOR, eyesInput);
 });
 
 
