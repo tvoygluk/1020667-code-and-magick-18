@@ -67,10 +67,9 @@ setup.querySelector('.setup-similar').classList.remove('hidden');
 
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
-var usernameInput = setup.querySelector('input[name=username]');
 
 var onPopupEscPress = function (evt) {
-  if ((evt.keyCode === ESC_KEYCODE) && (usernameInput !== document.activeElement)) {
+  if ((evt.keyCode === ESC_KEYCODE) && (!evt.target.classList.contains('setup-user-name'))) {
     closePopup();
   }
 };
