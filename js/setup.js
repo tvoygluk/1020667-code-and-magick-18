@@ -26,9 +26,12 @@
 
   var successHandler = function (wizards) {
     var fragment = document.createDocumentFragment();
+    var shuffledWizards = wizards.sort(function () {
+      return Math.random() - 0.5;
+    });
 
     for (var i = 0; i < WISARDS_LIMIT; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
+      fragment.appendChild(renderWizard(shuffledWizards[i]));
     }
     similarListElement.appendChild(fragment);
 
@@ -48,6 +51,19 @@
   };
 
   window.backend.load(successHandler, errorHandler);
+
+  var form = setupElement.querySelector('.setup-wizard-form');
+
+  var sentData = function () {
+    setupElement.classList.add('hidden');
+  };
+
+  var onSubmitForm = function (evt) {
+    window.backend.save(new FormData(form), sentData, errorHandler);
+    evt.preventDefault();
+  };
+
+  form.addEventListener('submit', onSubmitForm);
 
   window.setup = {
     COAT_COLORS: COAT_COLORS,
