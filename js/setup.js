@@ -50,7 +50,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(window.backend.REQUEST_TYPE_GET, window.backend.URL_LOAD, successHandler, errorHandler);
+  window.backend.load(successHandler, errorHandler);
 
   var form = setupElement.querySelector('.setup-wizard-form');
 
@@ -59,7 +59,7 @@
   };
 
   var onSubmitForm = function (evt) {
-    window.backend.save(window.backend.REQUEST_TYPE_POST, window.backend.URL_SAVE, sentData, errorHandler, new FormData(form));
+    window.backend.save(sentData, errorHandler, new FormData(form));
     evt.preventDefault();
   };
 
