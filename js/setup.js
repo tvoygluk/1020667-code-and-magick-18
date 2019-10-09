@@ -1,65 +1,74 @@
 'use strict';
 
 (function () {
-  window.setup = {
-    WIZARD_NAMES: ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'],
-    WIZARD_SURNAMES: ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'],
-    COAT_COLORS: ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'],
-    EYES_COLOR: ['black', 'red', 'blue', 'yellow', 'green'],
-    getRandomArrayElement: function (someArray) {
-      return someArray[Math.floor(Math.random() * someArray.length)];
-    },
-    setupElement: document.querySelector('.setup')
+  var WISARDS_LIMIT = 4;
+  var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+  var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+  var getRandomArrayElement = function (someArray) {
+    return someArray[Math.floor(Math.random() * someArray.length)];
   };
+  var setupElement = document.querySelector('.setup');
+  setupElement.classList.remove('hidden');
 
-  var makeFullName = function (name, surname) {
-    return name + ' ' + surname;
-  };
+  var similarListElement = setupElement.querySelector('.setup-similar-list');
 
-  var similarListElement = window.setup.setupElement.querySelector('.setup-similar-list');
-
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-  .content
-  .querySelector('.setup-similar-item');
-
-  var makeMocks = function () {
-    var MOCKS_LENGTH = 4;
-    var mocksArray = [];
-
-    for (var i = 0; i < MOCKS_LENGTH; i++) {
-      var mockObj = {
-        name: makeFullName(window.setup.getRandomArrayElement(window.setup.WIZARD_NAMES), window.setup.getRandomArrayElement(window.setup.WIZARD_SURNAMES)),
-        coatColor: window.setup.getRandomArrayElement(window.setup.COAT_COLORS),
-        eyesColor: window.setup.getRandomArrayElement(window.setup.EYES_COLOR)
-      };
-
-      mocksArray.push(mockObj);
-    }
-
-    return mocksArray;
-  };
-
-  var wizards = makeMocks();
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
-  var addFragmentToLayout = function (mocks, addedBlock, renderFun) {
+  var successHandler = function (wizards) {
     var fragment = document.createDocumentFragment();
+    var shuffledWizards = wizards.sort(function () {
+      return Math.random() - 0.5;
+    });
 
-    for (var i = 0; i < mocks.length; i++) {
-      fragment.appendChild(renderFun(mocks[i]));
+    for (var i = 0; i < WISARDS_LIMIT; i++) {
+      fragment.appendChild(renderWizard(shuffledWizards[i]));
     }
-    addedBlock.appendChild(fragment);
+    similarListElement.appendChild(fragment);
+
+    setupElement.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-  addFragmentToLayout(wizards, similarListElement, renderWizard);
-  window.setup.setupElement.querySelector('.setup-similar').classList.remove('hidden');
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: purple;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(successHandler, errorHandler);
+
+  var form = setupElement.querySelector('.setup-wizard-form');
+
+  var sentData = function () {
+    setupElement.classList.add('hidden');
+  };
+
+  var onSubmitForm = function (evt) {
+    window.backend.save(sentData, errorHandler, new FormData(form));
+    evt.preventDefault();
+  };
+
+  form.addEventListener('submit', onSubmitForm);
+
+  window.setup = {
+    COAT_COLORS: COAT_COLORS,
+    EYES_COLOR: EYES_COLOR,
+    getRandomArrayElement: getRandomArrayElement,
+    setupElement: setupElement
+  };
 })();
