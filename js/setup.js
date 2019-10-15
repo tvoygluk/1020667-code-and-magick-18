@@ -3,7 +3,7 @@
 (function () {
   var WISARDS_LIMIT = 4;
   var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+  var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var getRandomArrayElement = function (someArray) {
     return someArray[Math.floor(Math.random() * someArray.length)];
   };
@@ -67,7 +67,7 @@
 
   window.setup = {
     COAT_COLORS: COAT_COLORS,
-    EYES_COLOR: EYES_COLOR,
+    EYES_COLORS: EYES_COLORS,
     getRandomArrayElement: getRandomArrayElement,
     setupElement: setupElement
   };

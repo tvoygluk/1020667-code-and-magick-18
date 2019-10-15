@@ -59,6 +59,6 @@
   });
 
   eyes.addEventListener('click', function () {
-    setupMyCharacter(eyes, window.setup.EYES_COLOR, eyesInput);
+    setupMyCharacter(eyes, window.setup.EYES_COLORS, eyesInput);
   });
 })();
